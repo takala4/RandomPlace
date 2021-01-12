@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/css/uikit.min.css" />
+    <link href="https://fonts.googleapis.com/earlyaccess/notosansjapanese.css" rel="stylesheet" />
+    <!-- jQuery is required -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- UIkit JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/js/uikit-icons.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Random Place</title>
+</head>
+
+<body>
+    
+        <div class="uk-margin-large-top uk-margin-large-bottom uk-margin-large-left uk-margin-large-right" uk-grid>
+            <button class="uk-button uk-button-secondary uk-button-large uk-width-1-1 uk-margin-large-left uk-margin-large-right" onclick="OnButtonClick();">
+                <span class="uk-text-large uk-text-center">CLICK</span></button>
+            <h1 class="uk-width-1-1 uk-text-center"><span id="TDFK">都道府県名</span></h1>
+            <h1 class="uk-width-1-1 uk-text-center"><span id="SKCS">市区町村名</span></h1>
+            <h2 class="uk-width-1-1 uk-text-center"><a id="GM_link" href="">Google Map</a></h2>
+        </div>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script language="javascript" type="text/javascript">
+    function OnButtonClick() {
+        $.getJSON("data.json", function (data) {
+
+            var rand_TDFK = Math.floor(Math.random() * data.TDFK.length);
+            console.log(data.TDFK[rand_TDFK]);
+            var TDFK_name = data.TDFK[rand_TDFK];
+
+            var rand_SKCS = Math.floor(Math.random() * data.SKCS[rand_TDFK].length);
+            console.log(data.SKCS[rand_TDFK][rand_SKCS]);
+            var SKCS_name = data.SKCS[rand_TDFK][rand_SKCS];
+
+            document.getElementById("TDFK").innerText = TDFK_name;
+            document.getElementById("SKCS").innerText = SKCS_name;
+            document.getElementById("GM_link").href = "https://www.google.com/maps/search/?api=1&query=" +
+                SKCS_name;
+
+        });
+    }
+</script>
+
+</html>
