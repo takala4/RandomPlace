@@ -15,23 +15,48 @@
 </head>
 
 <body>
-    
-        <div class="uk-margin-large-top uk-margin-large-bottom uk-margin-large-left uk-margin-large-right" uk-grid>
-            <button class="uk-button uk-button-secondary uk-button-large uk-width-1-1 uk-margin-large-left uk-margin-large-right" onclick="OnButtonClick();">
-                <span class="uk-text-large uk-text-center">CLICK</span></button>
-            <h1 class="uk-width-1-1 uk-text-center"><span id="TDFK">都道府県名</span></h1>
-            <h1 class="uk-width-1-1 uk-text-center"><span id="SKCS">市区町村名</span></h1>
-            <h2 class="uk-width-1-1 uk-text-center"><a id="GM_link" href="">Google Map</a></h2>
+    <div class="uk-margin-large-top uk-margin-large-bottom uk-margin-large-left uk-margin-large-right" uk-grid>
+        <div class="uk-width-1-1 uk-text-center" uk-form-custom="target: > * > span:first-child">
+            <select id="TDFK_LIST">
+                <option value="-1">全国</option>
+            </select>
+            <button class="uk-button uk-button-default uk-width-1-1 uk-text-center" type="button" tabindex="-1">
+                <span></span>
+                <span uk-icon="icon: chevron-down"></span>
+            </button>
         </div>
+        <button
+            class="uk-button uk-button-secondary uk-button-large uk-width-1-1 uk-margin-large-left uk-margin-large-right"
+            onclick="OnButtonClick();">
+            <span class="uk-text-large uk-text-center">CLICK</span></button>
+        <h1 class="uk-width-1-1 uk-text-center"><span id="TDFK">都道府県名</span></h1>
+        <h1 class="uk-width-1-1 uk-text-center"><span id="SKCS">市区町村名</span></h1>
+        <h2 class="uk-width-1-1 uk-text-center"><a id="GM_link" href="">Google Map</a></h2>
+    </div>
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script language="javascript" type="text/javascript">
+    $.getJSON("data.json", function (data) {
+        var len = data.TDFK.length;
+        var news_list = $("#TDFK_LIST");
+        for (var i = 0; i < len; i++) {
+            news_list.append($(`<option value=${i}>`).html(data.TDFK[i]));
+        }
+    });
+
+
     function OnButtonClick() {
         $.getJSON("data.json", function (data) {
 
-            var rand_TDFK = Math.floor(Math.random() * data.TDFK.length);
-            console.log(data.TDFK[rand_TDFK]);
+            var TDFK_id = document.getElementById("TDFK_LIST").value;
+
+            if (TDFK_id == -1) {
+                var rand_TDFK = Math.floor(Math.random() * data.TDFK.length);
+                console.log(data.TDFK[rand_TDFK]);
+            }else{
+                var rand_TDFK = TDFK_id;    
+            }
             var TDFK_name = data.TDFK[rand_TDFK];
 
             var rand_SKCS = Math.floor(Math.random() * data.SKCS[rand_TDFK].length);
